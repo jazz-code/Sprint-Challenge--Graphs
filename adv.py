@@ -77,38 +77,97 @@ player = Player(world.starting_room)
 #     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
 #     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
+# queue = Queue()
+
+# while queue.size() > 0:
+#     starting_room = player.current_room.id
+# stack = stack()
+# rooms = {}
+# exits = {}
+# traversal_path = []
+# unexplored = []
+# init_graph = {0: {'n': '?', 's': '?','w': '?','e': '?'}}
+# reverse_directions = { 'n': "s", 's': 'n', 'e': 'w', 'w': 'e' }
+# starting_room = player.current_room.id
+# rooms[0] = player.current_room.get_exits()
+# exits[0] = player.current_room.get_exits()
+# while len(rooms) < len(room_graph) -1:
+#     if starting_room not in rooms:
+#         rooms[starting_room] = player.current_room.get_exits()
+#         exits[starting_room] = player.current_room.get_exits()
+
+#         unexplored = path[-1]
+#         exits[starting_room].remove(unexplored)
+
+#     while len(exits[starting_room]) < 1:
+#         loop_path = unexplored.pop()
+#         traversal_path.append(loop_path)
+#         player.travel(loop_path)
+
+#     # find first exit in the room
+#     new_exit = exits[starting_room].pop(0)
+#     traversal_path.append(new_exit)
+#     # loop back to reverse direction 
+#     unexplored.append(reverse_directions[new_exit])
+#     player.travel(new_exit)
+
+#     # to get last room
+#     if len(room_graph) - len(rooms) == 1:
+#         rooms[player.current_room.id] = player.current_room.getExits()
+
 # def dfs(starting_room):
 """
 Return a list containing a path from
 starting_vertex to destination_vertex in
 depth-first order.
 """
+init_graph = {0: {'n': '?', 's': '?','w': '?','e': '?'}}
+reverse_directions = { 'n': "s", 's': 'n', 'e': 'w', 'w': 'e' }
 traversal_path = []
-stack = Stack()
+# stack = Stack()
 visited_rooms = set()
-# print(player.current_room.id)
-# player.current_room = starting_room
 # Put starting room on the stack
-# TODO implement random direction
-stack.push(player.current_room.get_exits())
-# While stuff in stack
-while stack.size() > 0:
-#   Pop the first item
-    path = stack.pop()
-    room = path[-1]
-#    If not visited
-    if room not in visited_rooms:
-        visited_rooms.add(room)
-        traversal_path.append(visited_rooms)
-        print("test",list(traversal_path))
-print(traversal_path)
+room_id = player.current_room.id
+
+def bfs(starting_room, destination_room):
+        """
+        Return a list of direction to follow to get from
+        starting room to destination room
+        """
+        queue = Queue()
+        paths = []
+        visited = set()
+        queue.enqueue([starting_room])
+
+        while queue.size() > 0:
+            path = queue.dequeue()
+            room = path[-1]
+            if room not in visited:
+                if room == destination_room:
+                    return
+                visited.add(room)
+
+                for next_room in list(traversal_graph[room].values()):
+                    if next_room != '?':
+                        new_path = list(path)
+                        new_path.append(next_room)
+                        queue.enqueue(new_path)
+
+        for i in range(len(path) - 1):
+            for path, room in traversal_graph[path[i]]:
+                if room == path[i+1]:
+                    paths.append(path)
+
+        return print(f"Paths: ",{paths})
+
+# print(traversal_path)
 # #       For each edge in the item
-#     for next_room in sel 
-#     # self.get_neighbors(vertex):
-#     # Copy path to avoid pass by reference bug
-#         traversal_path = list(path) # Make a copy of path rather than reference
-#         traversal_path.append(next_room)
-#         stack.push(traversal_path)
+    # for next_room in sel 
+    # # self.get_neighbors(vertex):
+    # # Copy path to avoid pass by reference bug
+    #     traversal_path = list(path) # Make a copy of path rather than reference
+    #     traversal_path.append(next_room)
+    #     stack.push(traversal_path)
 
 
 
@@ -151,36 +210,6 @@ else:
 # Loops back to nearest room with unexplored path
 
 # BFS shortest path
-def dfs(self, starting_room, destination_vertex):
-    """
-    Return a list containing a path from
-    starting_vertex to destination_vertex in
-    depth-first order.
-    """
-    stack = Stack()
-    visited_rooms = set()
-    player.current_room = starting_room
-    # Put starting room on the stack
-    # TODO implement random room
-    stack.push(starting_room)
-    # While stuff in stack
-    while stack.size() > 0:
-    #   Pop the first item
-        path = stack.pop()
-        room = path[-1]
-    #    If not visited
-        if room not in visited_rooms:
-            if room == destination_vertex:
-                # Do the thing!
-                return path
-            visited_rooms.add(room)
-    # visited_rooms.add(player.current_room) ????
-#       For each edge in the item
-        for next_vert in self.get_neighbors(vertex):
-        # Copy path to avoid pass by reference bug
-            new_path = list(path) # Make a copy of path rather than reference
-            new_path.append(next_vert)
-            stack.push(new_path)
 
 
 #######
